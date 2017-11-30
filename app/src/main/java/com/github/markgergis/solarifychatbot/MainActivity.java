@@ -86,7 +86,7 @@ public class MainActivity extends DemoMessagesActivity
             protected String doInBackground(Void... voids) {
                 String post = "";
                 try {
-                    post = server.post(new Gson().toJson( "{\n\t\"message\": " + in + "\n}"));
+                    post = server.post("{\n\t\"message\": \"" + in + "\"\n}");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -100,7 +100,7 @@ public class MainActivity extends DemoMessagesActivity
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                Message mes = new Message(server.uuid,new User(server.uuid,"solarify",null,true),server.message);
+                Message mes = new Message(server.uuid,new User(server.uuid,"solarify",null,true),s);
                 messagesAdapter.addToStart(mes, true);
             }
         }.execute();

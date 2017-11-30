@@ -1,5 +1,7 @@
 package com.github.markgergis.solarifychatbot.model;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -51,17 +53,18 @@ public class Server {
     public String post(String bodyJson) throws IOException {
         RequestBody body = RequestBody.create(JSON, bodyJson);
         Request request = new Request.Builder()
-                .addHeader("Authorization", uuid)
-                .addHeader("Content-Type", "application/json")
                 .url(URL + "chat")
                 .post(body)
+                .addHeader("authorization", uuid)
+                .addHeader("content-type", "application/json")
                 .build();
+        Log.d("markr", bodyJson);
         Response response = client.newCall(request).execute();
         return response.body().string();
     }
     void fromJson(String json){
         JsonObject jobj = gson.fromJson(json, JsonObject.class);
-        uuid = jobj.get("uuid").toString();
+        uuid = jobj.get("uuid").getAsString();
         message = jobj.get("message").getAsString();
     }
 }
