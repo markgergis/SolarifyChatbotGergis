@@ -29,7 +29,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -57,6 +61,8 @@ public class MainActivity extends DemoMessagesActivity
     }
 
     private MessagesList messagesList;
+    private Button buttonYes;
+    private Button buttonNo;
     Message m = new Message(Long.toString(UUID.randomUUID().getLeastSignificantBits()),
             (new User(senderId,"user",null,true)),
             "");
@@ -65,6 +71,24 @@ public class MainActivity extends DemoMessagesActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_layout_messages);
+
+        buttonNo = (Button) LayoutInflater.from(this).
+                inflate(R.layout.item_custom_incoming_text_message, null).findViewById(R.id.buttonNO);
+        buttonYes = (Button) LayoutInflater.from(this).
+                inflate(R.layout.item_custom_incoming_text_message, null).findViewById(R.id.buttonYes);
+
+        buttonNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //handle location permission and get location lat lng
+            }
+        });
+        buttonYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //handle location permission and get location lat lng
+            }
+        });
 
         messagesList = (MessagesList) findViewById(R.id.messagesList);
         initAdapter();
@@ -100,8 +124,20 @@ public class MainActivity extends DemoMessagesActivity
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
+
                 Message mes = new Message(server.uuid,new User(server.uuid,"solarify",null,true),s);
                 messagesAdapter.addToStart(mes, true);
+                final Handler handler = new Handler();
+                if(s.contains("location")) {
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            findViewById(R.id.locationLayout).setVisibility(View.VISIBLE);
+                        }
+                    },1500);
+
+                }
+
             }
         }.execute();
 

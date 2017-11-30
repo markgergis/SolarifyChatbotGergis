@@ -1,6 +1,5 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
@@ -26,26 +25,66 @@
         android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"/>
 
-    <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
-        android:id="@id/image"
+    <LinearLayout
+        android:id="@id/bubble"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/message_incoming_bubble_margin_right"
-        android:layout_marginRight="@dimen/message_incoming_bubble_margin_right"
+        android:layout_marginEnd="30dp"
+        android:layout_marginRight="30dp"
         android:layout_toEndOf="@id/messageUserAvatar"
         android:layout_toRightOf="@id/messageUserAvatar"
-        android:adjustViewBounds="true"
-        app:siShape="@drawable/bg_custom_incoming_message"
-        app:siSquare="false"/>
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@id/messageText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginStart="8dp"/>
+
+    </LinearLayout>
 
     <TextView
         android:id="@id/messageTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@id/image"
-        android:layout_alignRight="@id/image"
-        android:layout_below="@id/image"
+        android:layout_alignEnd="@id/bubble"
+        android:layout_alignRight="@id/bubble"
+        android:layout_below="@id/bubble"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"/>
+
+    <LinearLayout
+        android:id="@+id/locationLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_below="@id/messageTime"
+        >
+
+        <Button
+            android:text="No"
+            android:id="@+id/buttonNO"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingVertical="16dp"
+            android:layout_margin="8dp"
+            />
+        <Button
+            android:id="@+id/buttonYes"
+            android:text="Yes"
+            android:textStyle="bold"
+            android:paddingVertical="16dp"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/green"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="8dp"
+            />
+    </LinearLayout>
 
 </RelativeLayout>

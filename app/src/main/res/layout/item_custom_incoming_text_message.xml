@@ -56,4 +56,36 @@
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"/>
 
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/locationLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_below="@id/messageTime"
+        >
+
+        <Button
+            android:text="No"
+            android:id="@+id/buttonNO"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingVertical="16dp"
+            android:layout_margin="8dp"
+            />
+        <Button
+            android:id="@+id/buttonYes"
+            android:text="Yes"
+            android:textStyle="bold"
+            android:paddingVertical="16dp"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/green"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="8dp"
+            />
+    </LinearLayout>
+
 </RelativeLayout>
