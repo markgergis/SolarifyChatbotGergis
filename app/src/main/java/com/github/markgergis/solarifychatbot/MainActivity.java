@@ -27,10 +27,14 @@ package com.github.markgergis.solarifychatbot;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.google.android.gms.common.ConnectionResult;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.stfalcon.chatkit.messages.MessageHolders;
@@ -130,4 +134,5 @@ public class MainActivity extends DemoMessagesActivity
         super.messagesAdapter.setLoadMoreListener(this);
         messagesList.setAdapter(super.messagesAdapter);
     }
+
 }
