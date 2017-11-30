@@ -26,7 +26,7 @@ public class Server {
     public Server(){
         client  = new OkHttpClient();
 
-        JSON = MediaType.parse("application/json; charset=utf-8");
+        JSON = MediaType.parse("application/json");
         gson = new Gson();
 
 
@@ -52,6 +52,7 @@ public class Server {
         RequestBody body = RequestBody.create(JSON, bodyJson);
         Request request = new Request.Builder()
                 .addHeader("Authorization", uuid)
+                .addHeader("Content-Type", "application/json")
                 .url(URL + "chat")
                 .post(body)
                 .build();

@@ -32,6 +32,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.stfalcon.chatkit.messages.MessageHolders;
 import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
@@ -83,14 +84,25 @@ public class MainActivity extends DemoMessagesActivity
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
+                String post = "";
                 try {
-                    server.post(new Gson().toJson("{\nmessage:"+in));
+                    post = server.post(new Gson().toJson( "{\n\t\"message\": " + in + "\n}"));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                return null;
+                Gson gson = new Gson();
+                Log.d("markr",post);
+                JsonObject jobj =gson.fromJson(post, JsonObject.class);
+                return jobj.get("message").getAsString();
+
             }
 
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                Message mes = new Message(server.uuid,new User(server.uuid,"solarify",null,true),server.message);
+                messagesAdapter.addToStart(mes, true);
+            }
         }.execute();
 
         return true;
