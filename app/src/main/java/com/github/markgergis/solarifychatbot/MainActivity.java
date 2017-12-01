@@ -28,13 +28,17 @@ package com.github.markgergis.solarifychatbot;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
+import com.github.markgergis.solarifychatbot.holders.CustomIncomingTextMessageViewHolder;
+import com.github.markgergis.solarifychatbot.holders.CustomOutcomingTextMessageViewHolder;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.stfalcon.chatkit.messages.MessageHolders;
@@ -61,34 +65,15 @@ public class MainActivity extends DemoMessagesActivity
     }
 
     private MessagesList messagesList;
-    private Button buttonYes;
-    private Button buttonNo;
     Message m = new Message(Long.toString(UUID.randomUUID().getLeastSignificantBits()),
             (new User(senderId,"user",null,true)),
             "");
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_layout_messages);
-
-        buttonNo = (Button) LayoutInflater.from(this).
-                inflate(R.layout.item_custom_incoming_text_message, null).findViewById(R.id.buttonNO);
-        buttonYes = (Button) LayoutInflater.from(this).
-                inflate(R.layout.item_custom_incoming_text_message, null).findViewById(R.id.buttonYes);
-
-        buttonNo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //handle location permission and get location lat lng
-            }
-        });
-        buttonYes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //handle location permission and get location lat lng
-            }
-        });
 
         messagesList = (MessagesList) findViewById(R.id.messagesList);
         initAdapter();
@@ -101,10 +86,16 @@ public class MainActivity extends DemoMessagesActivity
     @Override
     public boolean onSubmit(CharSequence input) {
         m.setText(input.toString());
-        final String in = input.toString();
         messagesAdapter.addToStart(
                 m,
                 true);
+        sendPostRequest(input);
+
+        return true;
+    }
+
+    void sendPostRequest(CharSequence input){
+        final String in = input.toString();
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
@@ -128,11 +119,12 @@ public class MainActivity extends DemoMessagesActivity
                 Message mes = new Message(server.uuid,new User(server.uuid,"solarify",null,true),s);
                 messagesAdapter.addToStart(mes, true);
                 final Handler handler = new Handler();
-                if(s.contains("location")) {
+                if(s.toLowerCase().contains("i need your location")) {
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             findViewById(R.id.locationLayout).setVisibility(View.VISIBLE);
+
                         }
                     },1500);
 
@@ -140,8 +132,6 @@ public class MainActivity extends DemoMessagesActivity
 
             }
         }.execute();
-
-        return true;
     }
 
     @Override
@@ -153,17 +143,38 @@ public class MainActivity extends DemoMessagesActivity
     public void onMessageLongClick(Message message) {
         AppUtils.showToast(this, R.string.on_log_click_message, false);
     }
-
     private void initAdapter() {
         MessageHolders holdersConfig = new MessageHolders()
-                .setIncomingTextLayout(R.layout.item_custom_incoming_text_message)
-                .setOutcomingTextLayout(R.layout.item_custom_outcoming_text_message)
-                .setIncomingImageLayout(R.layout.item_custom_incoming_image_message)
-                .setOutcomingImageLayout(R.layout.item_custom_outcoming_image_message);
+                .setIncomingTextConfig(CustomIncomingTextMessageViewHolder.class,
+                        R.layout.item_custom_incoming_text_message)
+                .setOutcomingTextConfig(CustomOutcomingTextMessageViewHolder.class,
+                        R.layout.item_custom_outcoming_text_message);
+
 
         super.messagesAdapter = new MessagesListAdapter<>(super.senderId, holdersConfig, super.imageLoader);
         super.messagesAdapter.setOnMessageLongClickListener(this);
         super.messagesAdapter.setLoadMoreListener(this);
+        messagesAdapter.registerViewClickListener(
+                R.id.buttonYes, new MessagesListAdapter.OnMessageViewClickListener<Message>() {
+                    @RequiresApi(api = Build.VERSION_CODES.M)
+                    @Override
+                    public void onMessageViewClick(View view, Message message) {
+                        getLocationOnPress();
+                        final Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    String s = (lat+"#"+lon);
+                                    Log.d("markr", s);
+                                    sendPostRequest(s);
+                                }
+                            },500);
+
+
+                    }
+                }
+        );
         messagesList.setAdapter(super.messagesAdapter);
+
     }
 }
