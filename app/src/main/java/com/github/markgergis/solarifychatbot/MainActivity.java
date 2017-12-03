@@ -7,13 +7,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.RequiresApi;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 
-import com.github.markgergis.solarifychatbot.holders.CustomIncomingTextMessageViewHolder;
-import com.github.markgergis.solarifychatbot.holders.CustomOutcomingTextMessageViewHolder;
+import com.github.markgergis.solarifychatbot.holders.IncomingTextMessageViewHolder;
+import com.github.markgergis.solarifychatbot.holders.OutcomingTextMessageViewHolder;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.stfalcon.chatkit.messages.MessageHolders;
@@ -21,16 +18,13 @@ import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
 import com.stfalcon.chatkit.sample.R;
-import com.stfalcon.chatkit.sample.common.data.fixtures.MessagesFixtures;
 import com.github.markgergis.solarifychatbot.model.Message;
-import com.github.markgergis.solarifychatbot.DemoMessagesActivity;
 import com.github.markgergis.solarifychatbot.model.User;
-import com.stfalcon.chatkit.sample.utils.AppUtils;
 
 import java.io.IOException;
 import java.util.UUID;
 
-public class MainActivity extends DemoMessagesActivity
+public class MainActivity extends MessagesActivity
         implements MessagesListAdapter.OnMessageLongClickListener<Message>,
         MessageInput.InputListener,
         MessageInput.AttachmentsListener {
@@ -118,13 +112,12 @@ public class MainActivity extends DemoMessagesActivity
 
     @Override
     public void onMessageLongClick(Message message) {
-        AppUtils.showToast(this, R.string.on_log_click_message, false);
     }
     private void initAdapter() {
         MessageHolders holdersConfig = new MessageHolders()
-                .setIncomingTextConfig(CustomIncomingTextMessageViewHolder.class,
+                .setIncomingTextConfig(IncomingTextMessageViewHolder.class,
                         R.layout.item_custom_incoming_text_message)
-                .setOutcomingTextConfig(CustomOutcomingTextMessageViewHolder.class,
+                .setOutcomingTextConfig(OutcomingTextMessageViewHolder.class,
                         R.layout.item_custom_outcoming_text_message);
 
 

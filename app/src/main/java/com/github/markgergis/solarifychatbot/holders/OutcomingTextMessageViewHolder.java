@@ -5,10 +5,10 @@ import android.view.View;
 import com.github.markgergis.solarifychatbot.model.Message;
 import com.stfalcon.chatkit.messages.MessageHolders;
 
-public class CustomOutcomingTextMessageViewHolder
+public class OutcomingTextMessageViewHolder
         extends MessageHolders.OutcomingTextMessageViewHolder<Message> {
 
-    public CustomOutcomingTextMessageViewHolder(View itemView) {
+    public OutcomingTextMessageViewHolder(View itemView) {
         super(itemView);
     }
 

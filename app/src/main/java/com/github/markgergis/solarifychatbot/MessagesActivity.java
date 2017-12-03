@@ -17,7 +17,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -31,22 +30,14 @@ import com.squareup.picasso.Picasso;
 import com.stfalcon.chatkit.commons.ImageLoader;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
 import com.stfalcon.chatkit.sample.R;
-import com.stfalcon.chatkit.sample.common.data.fixtures.MessagesFixtures;
 import com.github.markgergis.solarifychatbot.model.Message;
-import com.stfalcon.chatkit.sample.utils.AppUtils;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
-
-public abstract class DemoMessagesActivity extends AppCompatActivity
+public abstract class MessagesActivity extends AppCompatActivity
         implements MessagesListAdapter.SelectionListener,
         MessagesListAdapter.OnLoadMoreListener, LocationListener, GoogleApiClient.ConnectionCallbacks
         , GoogleApiClient.OnConnectionFailedListener {
@@ -78,7 +69,7 @@ public abstract class DemoMessagesActivity extends AppCompatActivity
         imageLoader = new ImageLoader() {
             @Override
             public void loadImage(ImageView imageView, String url) {
-                Picasso.with(DemoMessagesActivity.this).load(url).into(imageView);
+                Picasso.with(MessagesActivity.this).load(url).into(imageView);
             }
         };
         new AsyncTask<Void, Void, String>() {
@@ -100,12 +91,6 @@ public abstract class DemoMessagesActivity extends AppCompatActivity
 
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//
-//
-//    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void getLocationOnPress(){
@@ -171,7 +156,6 @@ public abstract class DemoMessagesActivity extends AppCompatActivity
                 break;
             case R.id.action_copy:
                 messagesAdapter.copySelectedMessagesText(this, getMessageStringFormatter(), true);
-                AppUtils.showToast(this, R.string.copied_message, true);
                 break;
         }
         return true;

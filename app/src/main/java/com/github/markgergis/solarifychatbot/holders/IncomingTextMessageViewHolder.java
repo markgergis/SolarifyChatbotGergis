@@ -8,15 +8,13 @@ import com.stfalcon.chatkit.messages.MessageHolders;
 import com.stfalcon.chatkit.sample.R;
 import com.github.markgergis.solarifychatbot.model.Message;
 
-public class CustomIncomingTextMessageViewHolder
+public class IncomingTextMessageViewHolder
         extends MessageHolders.IncomingTextMessageViewHolder<Message> {
 
     public Button buttonYes;
-    public CustomIncomingTextMessageViewHolder(View itemView) {
+    public IncomingTextMessageViewHolder(View itemView) {
         super(itemView);
         buttonYes = (Button) itemView.findViewById(R.id.buttonYes);
-        Log.d("markr", "initialize");
-
     }
 
     @Override
