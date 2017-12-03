@@ -60,7 +60,16 @@ public class Server {
                 .build();
         Log.d("markr", bodyJson);
         Response response = client.newCall(request).execute();
-        return response.body().string();
+        Log.d("statusCode", response.code() + "");
+        Log.d("statusError", response.toString());
+        if(response.code() == 200){
+            return response.body().string();
+        }
+        if(response.code() == 422){
+            return "Response Error Occured";
+        }
+
+        return "Response Error Occured";
     }
     void fromJson(String json){
         JsonObject jobj = gson.fromJson(json, JsonObject.class);

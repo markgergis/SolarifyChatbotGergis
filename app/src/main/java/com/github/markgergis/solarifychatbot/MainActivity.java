@@ -107,7 +107,11 @@ public class MainActivity extends DemoMessagesActivity
                 }
                 Gson gson = new Gson();
                 Log.d("markr",post);
+                if(post.startsWith("Response"))
+                    return "Incorrect entry, please try again :)";
                 JsonObject jobj =gson.fromJson(post, JsonObject.class);
+                Log.d("jobj", jobj.get("message").getAsString());
+
                 return jobj.get("message").getAsString();
 
             }
