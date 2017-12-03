@@ -6,9 +6,12 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.view.View;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.markgergis.solarifychatbot.holders.IncomingTextMessageViewHolder;
 import com.github.markgergis.solarifychatbot.holders.OutcomingTextMessageViewHolder;
 import com.google.gson.Gson;
@@ -17,7 +20,6 @@ import com.stfalcon.chatkit.messages.MessageHolders;
 import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
-import com.stfalcon.chatkit.sample.R;
 import com.github.markgergis.solarifychatbot.model.Message;
 import com.github.markgergis.solarifychatbot.model.User;
 
@@ -42,7 +44,7 @@ public class MainActivity extends MessagesActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_custom_layout_messages);
+        setContentView(R.layout.activity_layout_messages);
 
         messagesList = (MessagesList) findViewById(R.id.messagesList);
         initAdapter();
@@ -116,9 +118,9 @@ public class MainActivity extends MessagesActivity
     private void initAdapter() {
         MessageHolders holdersConfig = new MessageHolders()
                 .setIncomingTextConfig(IncomingTextMessageViewHolder.class,
-                        R.layout.item_custom_incoming_text_message)
+                        R.layout.item_incoming_text_message)
                 .setOutcomingTextConfig(OutcomingTextMessageViewHolder.class,
-                        R.layout.item_custom_outcoming_text_message);
+                        R.layout.item_outcoming_text_message);
 
 
         super.messagesAdapter = new MessagesListAdapter<>(super.senderId, holdersConfig, super.imageLoader);
@@ -138,8 +140,25 @@ public class MainActivity extends MessagesActivity
                                     sendPostRequest(s);
                                 }
                             },500);
-
-
+                    }
+                }
+        );
+        messagesAdapter.registerViewClickListener(
+                R.id.buttonNO, new MessagesListAdapter.OnMessageViewClickListener<Message>() {
+                    @Override
+                    public void onMessageViewClick(View view, Message message) {
+                        new MaterialDialog.Builder(MainActivity.this)
+                                .title("Permission denied")
+                                .content("Solarify can't calculate your daily consumption without accessing your GPS to get your location" +
+                                        "\nDo you want to continue using Solarify Chatbot?")
+                                .positiveText("Continue").onNegative(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                MainActivity.this.finishAffinity();
+                            }
+                        })
+                                .negativeText("Exit")
+                                .show();
                     }
                 }
         );

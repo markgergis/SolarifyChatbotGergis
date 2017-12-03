@@ -80,7 +80,7 @@
             android:textStyle="bold"
             android:paddingVertical="16dp"
             android:textColor="@color/white"
-            android:backgroundTint="@color/green"
+            android:backgroundTint="@color/cornflower_blue_darkest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

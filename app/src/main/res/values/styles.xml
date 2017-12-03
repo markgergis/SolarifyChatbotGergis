@@ -1,9 +1,9 @@
 <resources>
 
     <style name="BlueTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/cornflower_blue</item>
-        <item name="colorPrimaryDark">@color/cornflower_blue_dark</item>
-        <item name="colorAccent">@color/cornflower_blue</item>
+        <item name="colorPrimary">@color/cornflower_blue_dark</item>
+        <item name="colorPrimaryDark">@color/cornflower_blue_darkest</item>
+        <item name="colorAccent">@color/cornflower_blue_two</item>
     </style>
 
     <style name="BlueThemeNoActionBar" parent="Theme.AppCompat.Light.NoActionBar">

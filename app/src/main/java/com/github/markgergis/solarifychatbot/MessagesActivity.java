@@ -29,7 +29,6 @@ import com.google.android.gms.location.LocationServices;
 import com.squareup.picasso.Picasso;
 import com.stfalcon.chatkit.commons.ImageLoader;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
-import com.stfalcon.chatkit.sample.R;
 import com.github.markgergis.solarifychatbot.model.Message;
 
 import java.text.SimpleDateFormat;

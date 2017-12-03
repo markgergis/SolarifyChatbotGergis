@@ -34,7 +34,7 @@
         app:attachmentButtonDefaultIconPressedColor="@color/green_dark"
         app:attachmentButtonHeight="27dp"
         app:attachmentButtonWidth="27dp"
-        app:inputButtonBackground="@drawable/bg_custom_layout_send"
+        app:inputButtonBackground="@drawable/ic_circle_black_24dp"
         app:inputButtonDefaultIconColor="@color/white"
         app:inputButtonDefaultIconDisabledColor="@color/white60"
         app:inputHint="@string/hint_enter_a_message"
