@@ -36,9 +36,7 @@ public class MainActivity extends MessagesActivity
     }
 
     private MessagesList messagesList;
-    Message m = new Message(Long.toString(UUID.randomUUID().getLeastSignificantBits()),
-            (new User(senderId,"user",null,true)),
-            "");
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -56,7 +54,9 @@ public class MainActivity extends MessagesActivity
 
     @Override
     public boolean onSubmit(CharSequence input) {
-        m.setText(input.toString());
+        Message m = new Message(Long.toString(UUID.randomUUID().getLeastSignificantBits()),
+                (new User(senderId,"user",null,true)),
+                input.toString());
         messagesAdapter.addToStart(
                 m,
                 true);
@@ -109,7 +109,7 @@ public class MainActivity extends MessagesActivity
 
     @Override
     public void onAddAttachments() {
-        messagesAdapter.addToStart(m, true);
+
     }
 
     @Override
