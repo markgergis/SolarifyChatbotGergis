@@ -1,28 +1,3 @@
-//package com.github.markgergis.solarifychatbot;
-//
-//import android.content.Context;
-//import android.content.Intent;
-//import android.support.v7.app.AppCompatActivity;
-//import android.os.Bundle;
-//
-//import com.stfalcon.chatkit.messages.MessageHolders;
-//import com.stfalcon.chatkit.messages.MessageInput;
-//import com.stfalcon.chatkit.messages.MessagesList;
-//import com.stfalcon.chatkit.messages.MessagesListAdapter;
-//import com.stfalcon.chatkit.sample.R;
-//import com.stfalcon.chatkit.sample.common.data.fixtures.MessagesFixtures;
-//import com.stfalcon.chatkit.sample.common.data.model.Message;
-//import com.stfalcon.chatkit.sample.features.demo.DemoMessagesActivity;
-//import com.stfalcon.chatkit.sample.utils.AppUtils;
-//
-//public class MainActivity extends AppCompatActivity {
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//    }
-//}
-
 package com.github.markgergis.solarifychatbot;
 
 import android.content.Context;
@@ -31,31 +6,27 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 
-import com.github.markgergis.solarifychatbot.holders.CustomIncomingTextMessageViewHolder;
-import com.github.markgergis.solarifychatbot.holders.CustomOutcomingTextMessageViewHolder;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.markgergis.solarifychatbot.holders.IncomingTextMessageViewHolder;
+import com.github.markgergis.solarifychatbot.holders.OutcomingTextMessageViewHolder;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.stfalcon.chatkit.messages.MessageHolders;
 import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
-import com.stfalcon.chatkit.sample.R;
-import com.stfalcon.chatkit.sample.common.data.fixtures.MessagesFixtures;
 import com.github.markgergis.solarifychatbot.model.Message;
-import com.github.markgergis.solarifychatbot.DemoMessagesActivity;
 import com.github.markgergis.solarifychatbot.model.User;
-import com.stfalcon.chatkit.sample.utils.AppUtils;
 
 import java.io.IOException;
 import java.util.UUID;
 
-public class MainActivity extends DemoMessagesActivity
+public class MainActivity extends MessagesActivity
         implements MessagesListAdapter.OnMessageLongClickListener<Message>,
         MessageInput.InputListener,
         MessageInput.AttachmentsListener {
@@ -73,7 +44,7 @@ public class MainActivity extends DemoMessagesActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_custom_layout_messages);
+        setContentView(R.layout.activity_layout_messages);
 
         messagesList = (MessagesList) findViewById(R.id.messagesList);
         initAdapter();
@@ -106,8 +77,10 @@ public class MainActivity extends DemoMessagesActivity
                     e.printStackTrace();
                 }
                 Gson gson = new Gson();
-                Log.d("markr",post);
+                if(post.startsWith("Response"))
+                    return "Incorrect entry, please try again :)";
                 JsonObject jobj =gson.fromJson(post, JsonObject.class);
+
                 return jobj.get("message").getAsString();
 
             }
@@ -141,14 +114,13 @@ public class MainActivity extends DemoMessagesActivity
 
     @Override
     public void onMessageLongClick(Message message) {
-        AppUtils.showToast(this, R.string.on_log_click_message, false);
     }
     private void initAdapter() {
         MessageHolders holdersConfig = new MessageHolders()
-                .setIncomingTextConfig(CustomIncomingTextMessageViewHolder.class,
-                        R.layout.item_custom_incoming_text_message)
-                .setOutcomingTextConfig(CustomOutcomingTextMessageViewHolder.class,
-                        R.layout.item_custom_outcoming_text_message);
+                .setIncomingTextConfig(IncomingTextMessageViewHolder.class,
+                        R.layout.item_incoming_text_message)
+                .setOutcomingTextConfig(OutcomingTextMessageViewHolder.class,
+                        R.layout.item_outcoming_text_message);
 
 
         super.messagesAdapter = new MessagesListAdapter<>(super.senderId, holdersConfig, super.imageLoader);
@@ -165,12 +137,28 @@ public class MainActivity extends DemoMessagesActivity
                                 @Override
                                 public void run() {
                                     String s = (lat+"#"+lon);
-                                    Log.d("markr", s);
                                     sendPostRequest(s);
                                 }
                             },500);
-
-
+                    }
+                }
+        );
+        messagesAdapter.registerViewClickListener(
+                R.id.buttonNO, new MessagesListAdapter.OnMessageViewClickListener<Message>() {
+                    @Override
+                    public void onMessageViewClick(View view, Message message) {
+                        new MaterialDialog.Builder(MainActivity.this)
+                                .title("Permission denied")
+                                .content("Solarify can't calculate your daily consumption without accessing your GPS to get your location" +
+                                        "\nDo you want to continue using Solarify Chatbot?")
+                                .positiveText("Continue").onNegative(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                MainActivity.this.finishAffinity();
+                            }
+                        })
+                                .negativeText("Exit")
+                                .show();
                     }
                 }
         );

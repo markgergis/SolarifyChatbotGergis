@@ -58,9 +58,15 @@ public class Server {
                 .addHeader("authorization", uuid)
                 .addHeader("content-type", "application/json")
                 .build();
-        Log.d("markr", bodyJson);
         Response response = client.newCall(request).execute();
-        return response.body().string();
+        if(response.code() == 200){
+            return response.body().string();
+        }
+        if(response.code() == 422){
+            return "Response Error Occured";
+        }
+
+        return "Response Error Occured";
     }
     void fromJson(String json){
         JsonObject jobj = gson.fromJson(json, JsonObject.class);
