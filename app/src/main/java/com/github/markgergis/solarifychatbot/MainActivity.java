@@ -92,7 +92,7 @@ public class MainActivity extends MessagesActivity
                 Message mes = new Message(server.uuid,new User(server.uuid,"solarify",null,true),s);
                 messagesAdapter.addToStart(mes, true);
                 final Handler handler = new Handler();
-                if(s.toLowerCase().contains("i need your location")) {
+                if(s.toLowerCase().contains("access")) {
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -100,9 +100,10 @@ public class MainActivity extends MessagesActivity
 
                         }
                     },1500);
-
                 }
-
+                else{
+                    findViewById(R.id.locationLayout).setVisibility(View.GONE);
+                }
             }
         }.execute();
     }
