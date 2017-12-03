@@ -58,10 +58,7 @@ public class Server {
                 .addHeader("authorization", uuid)
                 .addHeader("content-type", "application/json")
                 .build();
-        Log.d("markr", bodyJson);
         Response response = client.newCall(request).execute();
-        Log.d("statusCode", response.code() + "");
-        Log.d("statusError", response.toString());
         if(response.code() == 200){
             return response.body().string();
         }

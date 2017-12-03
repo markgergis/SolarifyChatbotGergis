@@ -45,9 +45,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-/*
- * Created by troy379 on 04.04.17.
- */
+
 public abstract class DemoMessagesActivity extends AppCompatActivity
         implements MessagesListAdapter.SelectionListener,
         MessagesListAdapter.OnLoadMoreListener, LocationListener, GoogleApiClient.ConnectionCallbacks
@@ -88,7 +86,6 @@ public abstract class DemoMessagesActivity extends AppCompatActivity
             protected String doInBackground(Void... voids) {
                 String welcome = "";
                 welcome=server.get();
-                Log.d("markr",welcome);
                 return welcome;
             }
 

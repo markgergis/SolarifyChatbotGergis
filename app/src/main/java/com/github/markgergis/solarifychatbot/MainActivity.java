@@ -1,28 +1,3 @@
-//package com.github.markgergis.solarifychatbot;
-//
-//import android.content.Context;
-//import android.content.Intent;
-//import android.support.v7.app.AppCompatActivity;
-//import android.os.Bundle;
-//
-//import com.stfalcon.chatkit.messages.MessageHolders;
-//import com.stfalcon.chatkit.messages.MessageInput;
-//import com.stfalcon.chatkit.messages.MessagesList;
-//import com.stfalcon.chatkit.messages.MessagesListAdapter;
-//import com.stfalcon.chatkit.sample.R;
-//import com.stfalcon.chatkit.sample.common.data.fixtures.MessagesFixtures;
-//import com.stfalcon.chatkit.sample.common.data.model.Message;
-//import com.stfalcon.chatkit.sample.features.demo.DemoMessagesActivity;
-//import com.stfalcon.chatkit.sample.utils.AppUtils;
-//
-//public class MainActivity extends AppCompatActivity {
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//    }
-//}
-
 package com.github.markgergis.solarifychatbot;
 
 import android.content.Context;
@@ -106,11 +81,9 @@ public class MainActivity extends DemoMessagesActivity
                     e.printStackTrace();
                 }
                 Gson gson = new Gson();
-                Log.d("markr",post);
                 if(post.startsWith("Response"))
                     return "Incorrect entry, please try again :)";
                 JsonObject jobj =gson.fromJson(post, JsonObject.class);
-                Log.d("jobj", jobj.get("message").getAsString());
 
                 return jobj.get("message").getAsString();
 
@@ -169,7 +142,6 @@ public class MainActivity extends DemoMessagesActivity
                                 @Override
                                 public void run() {
                                     String s = (lat+"#"+lon);
-                                    Log.d("markr", s);
                                     sendPostRequest(s);
                                 }
                             },500);
